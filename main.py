@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import pandas as pd
 
 df = pd.read_csv('./data/services2019.csv')
@@ -14,6 +14,13 @@ def preview():
     top10rows = df.head(10)
     result = top10rows.to_json(orient="records")
     return result
+    
+@app.route('/icd/<value>', methods=['GET'])
+def icdcode(value):
+    print('value: ', value)
+    filtered = df[df['svc_code_ctg'] == value]
+    return filtered.to_json(orient="records")
+
 
 
 if __name__ =='__main__':
